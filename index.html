@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Office of Performance Management and Open Data | Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <style>
+      body {
+        bottom: 0;
+        left: 0;
+        margin: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
+      #map {
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 0;
+        margin: 0;
+      }
+    </style>
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+    <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  </head>
+
+  <body>
+    <div id="map"></div>
+
+    <script>
+      var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 48"><path fill="#418fde" d="M17.43.21a.545.545 0 0 0-.86 0C13.93 3.61 0 21.92 0 30.61A17.2 17.2 0 0 0 17 48a17.2 17.2 0 0 0 17-17.39c0-8.69-13.93-27-16.57-30.4zM21.5 41a1.5 1.5 0 0 1 0-3c2.48 0 4.5-2.47 4.5-5.5a1.5 1.5 0 0 1 3 0c0 4.69-3.36 8.5-7.5 8.5z" data-name="Layer 2" style="fill: #009edb;"/></svg>';
+      var svg_url = encodeURI("data:image/svg+xml," + svg).replace('#','%23');
+
+      var searchParams = new URLSearchParams(window.location.search);
+
+      var center = [35.045631, -85.309677];
+      var zoom = 15;
+
+      const map = L.map("map").setView(center, zoom);
+
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+      // fetch csv
+      fetch("./data.csv")
+        .then(function (response) { return response.text(); })
+        .then(function (text) {
+            // parse csv text
+            const rows = Papa.parse(text, { header: true });
+            console.log("rows:", rows);
+
+            // add water fountains to map
+            rows.data.forEach(function (row) {
+                try {
+                    const latitude = row['@lat'];
+                    const longitude = row['@lon'];
+                    const point = [latitude, longitude];
+
+                    const icon = L.divIcon({
+                        className: "marker",
+                        html: svg,
+                        iconSize: [20, 20],
+                        iconAnchor: [6, 12],
+                        popupAnchor: [3.5, -8]
+                    });
+
+                    const marker = L.marker(point, {
+                        icon: icon
+                    }).addTo(map);
+                } catch (error) {
+                    console.error(error);
+                }
+            })
+        });
+    </script>
+  </body>
+</html>
