@@ -1,20 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<osm version="0.6" generator="Overpass API 0.7.62.1 084b4234">
-<note>The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.</note>
-<meta osm_base="2024-09-19T17:54:29Z" areas="2024-09-19T12:31:00Z"/>
-
-  <node id="1346955934" lat="35.0531525" lon="-85.2963944">
-    <tag k="amenity" v="drinking_water"/>
-  </node>
-  <node id="1347084975" lat="35.0535498" lon="-85.2881470">
-    <tag k="amenity" v="drinking_water"/>
-  </node>
-  <node id="12186650820" lat="35.0612614" lon="-85.3066215">
-    <tag k="access" v="yes"/>
-    <tag k="amenity" v="drinking_water"/>
-    <tag k="fee" v="no"/>
-    <tag k="fountain" v="drinking"/>
-    <tag k="operator" v="City of Chattanooga"/>
-  </node>
-
-</osm>
+@id,@lat,@lon,amenity,fountain
+1346955934,35.0531525,-85.2963944,drinking_water,
+1347084975,35.0535498,-85.2881470,drinking_water,
+12186650820,35.0612614,-85.3066215,drinking_water,drinking
