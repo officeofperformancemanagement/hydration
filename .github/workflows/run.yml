@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/osgeo/gdal    
     permissions:
       contents: write
     name: main
